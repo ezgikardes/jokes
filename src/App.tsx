@@ -16,6 +16,7 @@ function App() {
     );
     const data = await response.json();
     setJokes(data.slice(0, 4));
+    setActiveJoke(null);
   }
 
   useEffect(() => {
@@ -23,6 +24,10 @@ function App() {
   }, []);
 
   function saveJoke(joke: Joke) {
+    if (savedJokes.some((saved) => saved.id === joke.id)) {
+      setSavedJokes(savedJokes.filter((saved) => saved.id !== joke.id));
+      return;
+    }
     setSavedJokes([...savedJokes, joke]);
   }
 
@@ -31,28 +36,39 @@ function App() {
   }
 
   return (
-    <>
-      <Tabbar
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
-      />
-      {activeTab === "library" ? (
-        <JokeList
-          jokes={savedJokes}
-          saveJoke={saveJoke}
-          showJoke={showJoke}
-          activeJoke={activeJoke}
+    <div className="min-h-screen bg-gray-50">
+      <div className="max-w-md mx-auto px-4 py-8">
+        <h1 className="text-2xl font-bold text-gray-800 mb-6">Jokes app 🃏</h1>
+        <Tabbar
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
         />
-      ) : (
-        <JokeList
-          jokes={jokes}
-          saveJoke={saveJoke}
-          showJoke={showJoke}
-          activeJoke={activeJoke}
-        />
-      )}
-      <button onClick={() => fetchJokes()}>Refresh</button>
-    </>
+        {activeTab === "library" ? (
+          <JokeList
+            jokes={savedJokes}
+            saveJoke={saveJoke}
+            showJoke={showJoke}
+            activeJoke={activeJoke}
+            savedJokes={savedJokes}
+          />
+        ) : (
+          <JokeList
+            jokes={jokes}
+            saveJoke={saveJoke}
+            showJoke={showJoke}
+            activeJoke={activeJoke}
+            savedJokes={savedJokes}
+          />
+        )}
+        <div className="flex justify-center mt-8">
+          <button
+            onClick={() => fetchJokes()}
+            className="w-12 h-12 bg-[#595cdd] text-white rounded-full text-xl shadow-md hover:bg-[#4a4ec4] transition-colors flex items-center justify-center">
+            ↻
+          </button>
+        </div>
+      </div>
+    </div>
   );
 }
 

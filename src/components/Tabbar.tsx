@@ -7,15 +7,23 @@ type TabBarProps = {
 
 export default function Tabbar({ activeTab, setActiveTab }: TabBarProps) {
   return (
-    <div>
+    <div className="flex gap-2 mb-6">
       <button
         onClick={() => setActiveTab("newJokes")}
-        className={activeTab === "newJokes" ? "active" : ""}>
+        className={`px-5 py-2 rounded-full text-sm font-medium transition-colors ${
+          activeTab === "newJokes"
+            ? "bg-[#595cdd] text-white"
+            : "bg-gray-100 text-gray-500 hover:bg-gray-200"
+        }`}>
         New Jokes
       </button>
       <button
         onClick={() => setActiveTab("library")}
-        className={activeTab === "library" ? "active" : ""}>
+        className={`px-5 py-2 rounded-full text-sm font-medium transition-colors ${
+          activeTab === "library"
+            ? "bg-[#595cdd] text-white"
+            : "bg-gray-100 text-gray-500 hover:bg-gray-200"
+        }`}>
         Library
       </button>
     </div>
